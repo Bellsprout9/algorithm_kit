@@ -36,4 +36,40 @@ def solution(numbers):
             dic[str(num)] = 1
     return answer
 
+from math import sqrt
+
+def solution(numbers):
+    nums = set()
+
+    def dfs(curr, ans):
+        # 현재 붙인 문자열이 있다면 int로 바꾸어 세트에 추가
+        if ans:
+            nums.add(int(ans))
+
+        # 가능한 모든 경우의 수를 재귀로 탐색
+        for i in range(len(curr)):
+            dfs(
+                # 재귀함수의 매개변수를 현재 문자열을 제외한 문자열과 현재 이어붙인 문자열로 갱신
+                curr[:i] + curr[i+1:],
+                ans + curr[i]
+            )
+
+    # dfs 실행
+    dfs(numbers, "")
+
+    # 소수의 개수를 세는 변수
+    cnt = 0
+
+    # set에서 숫자를 하나씩 꺼내서 소수 판별
+    for num in nums:
+        if num <= 1:
+            continue
+        for i in range(2, int(sqrt(num)) + 1):
+            if num % i == 0:
+                break
+        else:
+            cnt += 1
+
+    return cnt
+
 print(solution(numbers))
